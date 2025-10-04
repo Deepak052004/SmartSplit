@@ -8,6 +8,8 @@ import cors from "cors";
 import authRoutes from "./routes/auth.js";
 import tripRoutes from "./routes/tripRoutes.js";
 import expenseRoutes from "./routes/expenseRoutes.js";
+import splitsRoutes from "./routes/splits.js";
+app.use("/splits", splitsRoutes);
 
 dotenv.config();
 const app = express();

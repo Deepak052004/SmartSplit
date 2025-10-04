@@ -1,7 +1,7 @@
 import express from "express";
 import Expense from "../models/Expense.js";
 import Trip from "../models/Trip.js";
-import { authMiddleware } from "../middleware/auth.js";
+import { authMiddleware } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 

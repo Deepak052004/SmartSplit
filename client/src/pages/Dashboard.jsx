@@ -7,19 +7,18 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [splits, setSplits] = useState([]);
 
-  // Fetch splits from backend
+  const fetchSplits = async () => {
+    try {
+      const res = await API.get("/splits");
+      setSplits(res.data);
+    } catch (err) {
+      console.error(err.response?.data || err);
+    }
+  };
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) navigate("/login");
-
-    const fetchSplits = async () => {
-      try {
-        const res = await API.get("/splits");
-        setSplits(res.data);
-      } catch (err) {
-        console.error(err.response?.data || err);
-      }
-    };
 
     fetchSplits();
   }, [navigate]);
@@ -42,20 +41,20 @@ const Dashboard = () => {
         </button>
       </div>
 
-      {/* Create Split Button */}
+      {/* Create Trip Button */}
       <div className="mb-6">
         <button
           onClick={() => navigate("/create-split")}
           className="inline-block bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition"
         >
-          + Create New Split
+          + Create New Trip
         </button>
       </div>
 
-      {/* Splits Grid */}
+      {/* Trips Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-auto flex-1">
         {splits.length === 0 ? (
-          <p className="text-gray-500">No splits yet. Create one!</p>
+          <p className="text-gray-500">No trips yet. Create one!</p>
         ) : (
           <AnimatePresence>
             {splits.map((split) => (
@@ -71,7 +70,7 @@ const Dashboard = () => {
                 <h2 className="text-xl font-bold mb-2">{split.title}</h2>
                 <p className="mb-1">Total Amount: ₹{split.total}</p>
                 <p className="text-gray-600 text-sm">
-                  Participants: {split.participants.join(", ")}
+                  Participants: {split.participants.map(p => p.name).join(", ")}
                 </p>
               </motion.div>
             ))}

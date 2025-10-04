@@ -1,23 +1,11 @@
 import mongoose from "mongoose";
 
 const tripSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true
-  },
-  createdBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true
-  },
-  members: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User"
-  }],
-  expenses: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Expense"
-  }]
-}, { timestamps: true });
+  title: { type: String, required: true },
+  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  participants: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  expenses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Expense" }],
+  createdAt: { type: Date, default: Date.now }
+});
 
 export default mongoose.model("Trip", tripSchema);

@@ -1,18 +1,21 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-const expenseSchema = new mongoose.Schema({
-  description: { type: String, required: true },
-  amount: { type: Number, required: true },
-  payer: { type: String, required: true },
-  participants: [{ type: String, required: true }] // participants sharing this expense
-});
+const splitSchema = new mongoose.Schema(
+  {
+    title: { type: String, required: true },
+    participants: [{ type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }],
+    expenses: [
+      {
+        amount: { type: Number, required: true },
+        description: { type: String },
+        paidBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+        createdAt: { type: Date, default: Date.now }
+      }
+    ],
+    total: { type: Number, default: 0 },
+    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }
+  },
+  { timestamps: true }
+);
 
-const splitSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  total: { type: Number, default: 0 },
-  participants: [{ type: String, required: true }],
-  expenses: [expenseSchema],
-  balances: { type: Map, of: Number, default: {} } // participant balances
-}, { timestamps: true });
-
-module.exports = mongoose.model("Split", splitSchema);
+export default mongoose.model("Split", splitSchema);
